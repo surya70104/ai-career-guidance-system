@@ -1,4 +1,5 @@
 import streamlit as st
+from styles import load_css
 
 from auth import (
     register_user,
@@ -14,6 +15,11 @@ from modules.career_guidance import career_guidance
 from modules.interview_module import interview_module
 from modules.resume_module import resume_module
 from modules.dashboard import dashboard
+
+
+# ---------------- LOAD CSS ----------------
+
+load_css()
 
 
 # ---------------- AVATARS ----------------
@@ -44,6 +50,7 @@ AVATARS = {
 
 st.set_page_config(
     page_title="AI Career Guidance System",
+    page_icon="🚀",
     layout="wide"
 )
 
@@ -57,36 +64,52 @@ if "user" not in st.session_state:
     st.session_state.user = None
 
 
-# ---------------- SIDEBAR ----------------
-
-st.sidebar.title("Menu")
-
-menu = st.sidebar.selectbox(
-    "Choose",
-    ["Login", "Register"]
-)
-
-
 # ---------------- LOGIN / REGISTER ----------------
 
 if not st.session_state.logged_in:
+
+    st.markdown(
+        """
+        <div class='hero-card'>
+            <h1>🚀 AI Career Guidance System</h1>
+            <p>
+            AI-powered career guidance, interview preparation,
+            resume analysis, and coding assessments.
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.sidebar.title("🔐 Authentication")
+
+    menu = st.sidebar.radio(
+        "Choose Option",
+        ["Login", "Register"]
+    )
 
     # ---------------- LOGIN ----------------
 
     if menu == "Login":
 
-        st.title("Login Form")
+        st.subheader("Welcome Back 👋")
 
-        email = st.text_input(
-            "Email",
-            autocomplete="email"
-        )
+        col1, col2 = st.columns(2)
 
-        password = st.text_input(
-            "Password",
-            type="password",
-            autocomplete="current-password"
-        )
+        with col1:
+
+            email = st.text_input(
+                "Email Address",
+                autocomplete="email"
+            )
+
+        with col2:
+
+            password = st.text_input(
+                "Password",
+                type="password",
+                autocomplete="current-password"
+            )
 
         if st.button("Login"):
 
@@ -112,22 +135,28 @@ if not st.session_state.logged_in:
 
     else:
 
-        st.title("Register Form")
+        st.subheader("Create Your AI Career Account")
 
-        name = st.text_input("Name")
+        col1, col2 = st.columns(2)
 
-        email = st.text_input(
-            "Email",
-            autocomplete="email"
-        )
+        with col1:
+
+            name = st.text_input("Full Name")
+
+        with col2:
+
+            email = st.text_input(
+                "Email Address",
+                autocomplete="email"
+            )
 
         password = st.text_input(
-            "Password",
+            "Create Password",
             type="password",
             autocomplete="new-password"
         )
 
-        if st.button("Register"):
+        if st.button("Register Account"):
 
             result = register_user(
                 name,
@@ -137,31 +166,37 @@ if not st.session_state.logged_in:
 
             if result:
 
-                st.success("Registration Successful")
+                st.success(
+                    "Registration Successful"
+                )
 
             else:
 
-                st.error("Email Already Exists")
+                st.error(
+                    "Email Already Exists"
+                )
+
+    # ---------------- FEATURE CARDS ----------------
 
 
 # ---------------- AFTER LOGIN ----------------
 
 else:
 
-    st.sidebar.title("Navigation")
+    st.sidebar.title("🤖 AI Career Assistant")
 
     page = st.sidebar.radio(
-        "Go To",
+        "Navigation",
         [
-            "Dashboard",
-            "Career Guidance",
-            "Interview Preparation",
-            "Resume Checker",
-            "Profile"
+            "🏠 Dashboard",
+            "💼 Career Guidance",
+            "🎯 Interview Preparation",
+            "📄 Resume Checker",
+            "👤 Profile"
         ]
     )
 
-    # ---------------- LOGOUT ----------------
+    st.sidebar.markdown("---")
 
     if st.sidebar.button("Logout"):
 
@@ -172,31 +207,92 @@ else:
 
     # ---------------- DASHBOARD ----------------
 
-    if page == "Dashboard":
+    if page == "🏠 Dashboard":
+
+        st.markdown(
+            """
+            <div class='hero-card'>
+                <h1>🚀 AI Career Dashboard</h1>
+                <p>
+                Welcome to your AI-powered career development platform.
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric("Career Roadmaps", "120+")
+
+        with col2:
+            st.metric("Interview Questions", "500+")
+
+        with col3:
+            st.metric("AI Accuracy", "95%")
+
+        st.write("")
 
         dashboard()
 
     # ---------------- CAREER GUIDANCE ----------------
 
-    elif page == "Career Guidance":
+    elif page == "💼 Career Guidance":
+
+        st.markdown(
+            """
+            <div class='hero-card'>
+                <h1>💼 Career Guidance</h1>
+                <p>
+                Generate personalized career roadmaps using AI.
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
         career_guidance()
 
     # ---------------- INTERVIEW ----------------
 
-    elif page == "Interview Preparation":
+    elif page == "🎯 Interview Preparation":
+
+        st.markdown(
+            """
+            <div class='hero-card'>
+                <h1>🎯 Interview Preparation</h1>
+                <p>
+                Practice coding and theory interviews with AI.
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
         interview_module()
 
     # ---------------- RESUME ----------------
 
-    elif page == "Resume Checker":
+    elif page == "📄 Resume Checker":
+
+        st.markdown(
+            """
+            <div class='hero-card'>
+                <h1>📄 Resume Checker</h1>
+                <p>
+                Analyze your resume and improve your profile.
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
         resume_module()
 
     # ---------------- PROFILE ----------------
 
-    elif page == "Profile":
+    elif page == "👤 Profile":
 
         st.title("👤 Professional Profile")
 
@@ -236,7 +332,7 @@ else:
 
         col1, col2 = st.columns([1, 2])
 
-        # ---------------- LEFT SIDE ----------------
+        # LEFT SIDE
 
         with col1:
 
@@ -260,7 +356,7 @@ else:
 
             st.info("AI Career User")
 
-        # ---------------- RIGHT SIDE ----------------
+        # RIGHT SIDE
 
         with col2:
 
@@ -362,3 +458,6 @@ else:
                 st.success(
                     "Profile Updated Successfully"
                 )
+
+# ---------------- FOOTER ----------------
+

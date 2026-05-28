@@ -1,11 +1,12 @@
+import os
 import google.generativeai as genai
 
 genai.configure(
-    api_key="AIzaSyC3er1TzHp6OyInyNT7n3V1RJux7oKQhcs"
+    api_key=os.getenv("GEMINI_API_KEY")
 )
 
 model = genai.GenerativeModel(
-    "models/gemini-flash-lite-latest"
+    "gemini-3.1-flash-lite"
 )
 
 def ask_ai(prompt):
